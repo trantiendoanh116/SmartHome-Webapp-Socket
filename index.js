@@ -27,8 +27,8 @@ webapp_nsp.use(middleware);
 android_nsp.use(middleware);							//Khi webapp emit bất kỳ lệnh gì lên thì sẽ bị bắt
 
 var ip = require('ip');
-server.listen(PORT);
-console.log("Server nodejs chay tai dia chi: " + ip.address() + ":" + PORT)										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
+server.listen(process.env.PORT || PORT);
+console.log("Server nodejs chay tai dia chi : " + ip.address() + ":" + PORT)										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
 //Cài đặt webapp các fie dữ liệu tĩnh
 app.use(express.static("node_modules/mobile-angular-ui")) 		
 app.use(express.static("node_modules/angular")) 							
