@@ -20,10 +20,11 @@ angular.module('myApp', [
 	const EVENT_RECEIVE_DATA = "DATA";
 	const EVENT_CONTROL = "CONTROL";
 	//Dùng để đặt các giá trị mặc định
-	$scope.fan_status = [0, 1, 0];//tương ứng với 3 mức của quạt
-	$scope.led_status = [1];
+	$scope.fan_status = [0, 0, 0];//tương ứng với 3 mức của quạt
+	$scope.led_status = 0;
+	$scope.led_status_1 = 0;
 	$scope.voltage_value = [0, 0, 0];
-	$scope.aptomat_value = [1];
+	$scope.aptomat_value = 0;
 	$scope.value = {}; //Các giá trị nhiệt độ, độ ẩm, khí CO
 	/*
 	- Các hàm xử lý nhận điều khiển từ client (webapp/app) 
@@ -52,6 +53,11 @@ angular.module('myApp', [
 	$scope.ledClick = function () {
 		var json = {};
 		json["light"] = true;
+		mySocket.emit(EVENT_CONTROL, json);
+	};
+	$scope.ledClick1 = function () {
+		var json = {};
+		json["light_1"] = true;
 		mySocket.emit(EVENT_CONTROL, json);
 	};
 
@@ -85,6 +91,10 @@ angular.module('myApp', [
 		if (json.hasOwnProperty('light')) {
 			var value = json['light'];
 			$scope.led_status = value
+		}
+		if (json.hasOwnProperty('light_1')) {
+			var value = json['light_1'];
+			$scope.led_status_1 = value
 		}
 		if (json.hasOwnProperty('apt')) {
 			var value = json['apt'];
