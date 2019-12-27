@@ -3,11 +3,28 @@
 		<div class="list-group text-center">
 			<!-- cục giới thiệu -->
 			<div class="list-group-item list-group-item-home">
-				<h1>SmartHome</small>
+				<h1>Smart Home</small>
 				</h1>
 			</div>
+			<!-- Status LED-->
+
+			<div class="list-group-item list-group-item-home">
+				<div>
+					<i class="fa fa-tachometer feature-icon  text-primary"></i>
+				</div>
+				<div>
+					<h3 class="home-heading">TRẠNG THÁI ĐÈN</h3>
+					<div>Đèn phòng khách:    {{led_status ? "ON" : "OFF"}}
+						<button ng-click="ledClick()" type="button">ON/OFF</button></div>
+					<div>Đèn trang trí:     {{led_status_1 ? "ON" : "OFF"}}
+						<button ng-click="ledClick1()" type="button">ON/OFF</button></div>
+
+				</div>
+
+			</div>
+			<!-- -->
 			<!-- Status FAN-->
-		
+
 			<div class="list-group-item list-group-item-home">
 				<div>
 					<i class="fa fa-tachometer feature-icon  text-primary"></i>
@@ -18,58 +35,40 @@
 						Tốc Độ Số {{$index+1}} : {{fan_value ? "ON" : "OFF"}}
 					</div>
 				</div>
-				<button ng-click="onFanClick()" type ="button" class="button">ON</button>
-				<button ng-click="offFanClick()" type ="button" class="button">OFF</button>
+				<button ng-click="onFanClick()" type="button" class="button">ON</button>
+				<button ng-click="offFanClick()" type="button" class="button">OFF</button>
 			</div>
-	    <!-- -->
-		<!-- Status LED-->
-		
+			<!-- -->
 			<div class="list-group-item list-group-item-home">
 				<div>
 					<i class="fa fa-tachometer feature-icon  text-primary"></i>
 				</div>
 				<div>
-					<h3 class="home-heading">TRẠNG THÁI ĐÈN</h3>
-					
-						Đèn đang: {{led_status ? "ON" : "OFF"}}
-						<button ng-click="ledClick()" type="button">ON/OFF</button>
+					<h3 class="home-heading">TRẠNG THÁI APTOMAT</h3>
+					<div>
+						Aptomat Tổng : {{apt_status ? "ON" : "OFF"}}
+						<button ng-click="atomatClick()" type="button">ON/OFF</button>
+					</div>
 				</div>
-			
 			</div>
-	    <!-- -->
-		<!-- --> 
-		<div class="list-group-item list-group-item-home">
-			<div>
-				<i class="fa fa-tachometer feature-icon  text-primary"></i>
-			</div>
-			<div>
-				<h3 class="home-heading">Tổng lượng điện tiêu thụ</h3>
-				<div >MW----KW-----W----A</div>
-				<h3>{{voltage_value.MWrms}}----{{voltage_value.KWrms}}----{{voltage_value.Wrms}}----{{voltage_value.AmpsRMS}}</h3>
+
+			<!-- -->
+			<div class="list-group-item list-group-item-home">
 				<div>
-					Atomat Tổng đang: {{apt_status ? "ON" : "OFF"}}
-					<button ng-click="atomatClick()" type="button">ON/OFF</button>
+					<i class="fa fa-tachometer feature-icon  text-primary"></i>
 				</div>
+				<h3>
+					Nhiệt độ : {{temp}}
+				</h3>
+				<h3>
+					Độ ẩm : {{humi}}
+				</h3>
+				<h3>
+					Khí CO : {{co}}
+				</h3>
+
 			</div>
-		</div>
-		
-		<!-- --> 
-		<div class="list-group-item list-group-item-home">
-			<div>
-				<i class="fa fa-tachometer feature-icon  text-primary"></i>
-			</div>
-			<h3>
-				Nhiệt độ bếp: {{temp}} 
-			</h3>
-			<h3>
-				Độ ẩm bếp: {{humi}}
-			</h3>
-			<h3>
-				Khí CO bếp: {{co}}
-			</h3>
-			
-		</div>
-			
+
 		</div>
 	</div>
 </div>
