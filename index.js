@@ -10,9 +10,9 @@ var socketio = require('socket.io')
 var admin = require('./firebase_admin')
 require('firebase')
 
-//var ip = require('ip');
 var app = express();
 var server = http.Server(app)
+var ip = require('ip');
 
 var io = socketio(server);
 //Tạo namespace để phân biêt SocketClient trên Esp và webapp
@@ -26,7 +26,7 @@ esp8266_nsp.use(middleware);						//Khi esp8266 emit bất kỳ lệnh gì lên 
 webapp_nsp.use(middleware);
 android_nsp.use(middleware);							//Khi webapp emit bất kỳ lệnh gì lên thì sẽ bị bắt
 
-var ip = require('ip');
+
 server.listen(process.env.PORT || PORT);
 console.log("Server nodejs chay tai dia chi : " + ip.address() + ":" + PORT)										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
 //Cài đặt webapp các fie dữ liệu tĩnh
