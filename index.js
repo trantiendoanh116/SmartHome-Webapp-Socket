@@ -8,27 +8,26 @@ var bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
 var socketio = require('socket.io')
 var admin = require('./firebase_admin')
-require('firebase')
 
 var app = express();
 var server = http.Server(app)
 var ip = require('ip');
 
 var io = socketio(server);
-//Tạo namespace để phân biêt SocketClient trên Esp và webapp
+//Tạo namespace để phân biêt SocketClient trên Esp, webapp, AndroidApp
 var webapp_nsp = io.of('/webapp')
 var android_nsp = io.of('/android')
 var esp8266_nsp = io.of('/esp8266')
 
 
-var middleware = require('socketio-wildcard')();	//Để có thể bắt toàn bộ lệnh!
-esp8266_nsp.use(middleware);						//Khi esp8266 emit bất kỳ lệnh gì lên thì sẽ bị bắt
+var middleware = require('socketio-wildcard')();
+esp8266_nsp.use(middleware);
 webapp_nsp.use(middleware);
-android_nsp.use(middleware);							//Khi webapp emit bất kỳ lệnh gì lên thì sẽ bị bắt
+android_nsp.use(middleware);
 
 
 server.listen(process.env.PORT || PORT);
-console.log("Server nodejs chay tai dia chi : " + ip.address() + ":" + PORT)										// Cho socket server (chương trình mạng) lắng nghe ở port 3484
+console.log("Server nodejs chay tai dia chi : " + ip.address() + ":" + PORT)
 //Cài đặt webapp các fie dữ liệu tĩnh
 app.use(express.static("node_modules/mobile-angular-ui"))
 app.use(express.static("node_modules/angular"))
@@ -152,9 +151,10 @@ esp8266_nsp.on('connection', function (socket) {
 
 
   socket.on("*", function (packet) {
+    console.log("Esp8266 send to webapp/android packet: ", packet.data)
+
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
-    console.log("Esp8266 send to webapp/android: eventName = " + eventName + ", eventJson = " + eventJson)
     //console.log("Name: " + eventName + ", Json: " + eventJson);
     webapp_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
     android_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
@@ -173,13 +173,13 @@ webapp_nsp.on('connection', function (socket) {
   })
 
   socket.on('*', function (packet) {
+    console.log("Webapp send to esp8266 packet: ", packet.data)
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
-    console.log("Webapp send to esp8266: eventName = " + eventName + ", eventJson = " + eventJson)
     esp8266_nsp.emit(eventName, eventJson)
   });
 });
-
+//Bắt các sự kiện từ android app -> gửi toàn bộ dữ liệu xuống esp8266
 android_nsp.on('connection', function (socket) {
 
   console.log('Android app connected')
@@ -189,10 +189,9 @@ android_nsp.on('connection', function (socket) {
   })
 
   socket.on('*', function (packet) {
-    
+    console.log("Android app send to esp8266 packet: ", packet.data)
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
-    console.log("Android app send to esp8266: eventName = " + eventName + ", eventJson = " + eventJson)
     esp8266_nsp.emit(eventName, eventJson)
   });
 });
