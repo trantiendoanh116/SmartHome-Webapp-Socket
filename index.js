@@ -152,10 +152,9 @@ esp8266_nsp.on('connection', function (socket) {
 
 
   socket.on("*", function (packet) {
-    console.log("Esp8266 send to webapp/android packet: ", packet.data)
-
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
+    console.log("Esp8266 send to webapp/android: eventName = " + eventName + ", eventJson = " + eventJson)
     //console.log("Name: " + eventName + ", Json: " + eventJson);
     webapp_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
     android_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
@@ -174,9 +173,9 @@ webapp_nsp.on('connection', function (socket) {
   })
 
   socket.on('*', function (packet) {
-    console.log("Webapp send to esp8266 packet: ", packet.data)
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
+    console.log("Webapp send to esp8266: eventName = " + eventName + ", eventJson = " + eventJson)
     esp8266_nsp.emit(eventName, eventJson)
   });
 });
@@ -190,9 +189,10 @@ android_nsp.on('connection', function (socket) {
   })
 
   socket.on('*', function (packet) {
-    console.log("Android app send to esp8266 packet: ", packet.data)
+    
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
+    console.log("Android app send to esp8266: eventName = " + eventName + ", eventJson = " + eventJson)
     esp8266_nsp.emit(eventName, eventJson)
   });
 });
