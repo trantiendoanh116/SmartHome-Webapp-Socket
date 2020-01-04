@@ -166,7 +166,9 @@ esp8266_nsp.on('connection', function (socket) {
 webapp_nsp.on('connection', function (socket) {
 
   console.log('webapp connected')
-
+  var eventJsonInit = {}
+  eventJsonInit["init"] = true;
+  esp8266_nsp.emit("CONTROL", eventJsonInit);
 
   socket.on('disconnect', function () {
     console.log("Disconnect socket webapp")
@@ -183,7 +185,9 @@ webapp_nsp.on('connection', function (socket) {
 android_nsp.on('connection', function (socket) {
 
   console.log('Android app connected')
-
+  var eventJsonInit = {}
+  eventJsonInit["init"] = true;
+  esp8266_nsp.emit("CONTROL", eventJsonInit);
   socket.on('disconnect', function () {
     console.log("Disconnect socket Android app")
   })
