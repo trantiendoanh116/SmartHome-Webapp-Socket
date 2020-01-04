@@ -143,7 +143,11 @@ function checkAuth(req, callback) {
 
 //Bắt các sự kiện từ esp8266 gửi lên -> gửi toàn bộ dữ liệu cho webapp
 esp8266_nsp.on('connection', function (socket) {
-  console.log('esp8266 connected')
+  console.log('esp8266 connected and update value')
+
+  var eventJsonInit = {}
+  eventJsonInit["init"] = true;
+  esp8266_nsp.emit("CONTROL", eventJsonInit);
 
   socket.on('disconnect', function () {
     console.log("Disconnect socket esp8266")
@@ -156,43 +160,43 @@ esp8266_nsp.on('connection', function (socket) {
     var eventName = packet.data[0]
     var eventJson = packet.data[1] || {}
     //console.log("Name: " + eventName + ", Json: " + eventJson);
-    webapp_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
+    //webapp_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
     android_nsp.emit(eventName, eventJson) //gửi toàn bộ lệnh + json đến webapp
   });
 });
 
 //Bắt các sự kiện từ webapp -> gửi toàn bộ dữ liệu xuống esp8266
 
-webapp_nsp.on('connection', function (socket) {
+// webapp_nsp.on('connection', function (socket) {
 
-  console.log('webapp connected')
-  var eventJsonInit = {}
-  eventJsonInit["init"] = true;
-  esp8266_nsp.emit("CONTROL", eventJsonInit);
-  console.log("Android app send to esp8266 packet: ", eventJsonInit)
+//   console.log('webapp connected')
+//   var eventJsonInit = {}
+//   eventJsonInit["init"] = true;
+//   esp8266_nsp.emit("CONTROL", eventJsonInit);
+//   console.log("Android app send to esp8266 packet: ", eventJsonInit)
 
-  socket.on('disconnect', function () {
-    console.log("Disconnect socket webapp")
-  })
+//   socket.on('disconnect', function () {
+//     console.log("Disconnect socket webapp")
+//   })
 
-  socket.on('*', function (packet) {
-    console.log("Webapp send to esp8266 packet: ", packet.data)
-    var eventName = packet.data[0]
-    var eventJson = packet.data[1] || {}
-    esp8266_nsp.emit(eventName, eventJson)
-  });
-});
+//   socket.on('*', function (packet) {
+//     console.log("Webapp send to esp8266 packet: ", packet.data)
+//     var eventName = packet.data[0]
+//     var eventJson = packet.data[1] || {}
+//     esp8266_nsp.emit(eventName, eventJson)
+//   });
+// });
 //Bắt các sự kiện từ android app -> gửi toàn bộ dữ liệu xuống esp8266
 android_nsp.on('connection', function (socket) {
 
   console.log('Android app connected')
-  var eventJsonInit = {}
-  eventJsonInit["init"] = true;
-  esp8266_nsp.emit("CONTROL", eventJsonInit);
-  console.log("Android app send to esp8266 packet: ", eventJsonInit)
-  socket.on('disconnect', function () {
-    console.log("Disconnect socket Android app")
-  })
+  // var eventJsonInit = {}
+  // eventJsonInit["init"] = true;
+  // esp8266_nsp.emit("CONTROL", eventJsonInit);
+  // console.log("Android app send to esp8266 packet: ", eventJsonInit)
+  // socket.on('disconnect', function () {
+  //   console.log("Disconnect socket Android app")
+  // })
 
   socket.on('*', function (packet) {
     console.log("Android app send to esp8266 packet: ", packet.data)
