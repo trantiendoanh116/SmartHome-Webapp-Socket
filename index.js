@@ -62,6 +62,11 @@ router.get('/', function (req, res) {
 
 });
 
+router.get('/ping', function (req, res) {
+  res.sendStatus(200);
+
+});
+
 router.get('/login', function (req, res) {
   checkAuth(req, function (authenticated) {
     if (authenticated) {
