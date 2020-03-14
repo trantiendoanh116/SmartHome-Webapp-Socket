@@ -171,7 +171,6 @@ esp8266_nsp.on('connection', function (socket) {
 });
 
 //Bắt các sự kiện từ iOS
-
 ios_nsp.on('connection', function (socket) {
   console.log('Socket iOS app connected')
   var eventJsonInit = {}
